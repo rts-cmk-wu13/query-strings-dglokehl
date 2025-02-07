@@ -29,12 +29,16 @@ img {
 
 .favorite__button {
     color: #000;
+
     cursor: pointer;
+    transition: scale 150ms ease-out;
 }
-.favorite__button:hover {
+.favorite__button:hover, .favorited {
     color: #ff3333;
 }
-
+.favorite__button:hover {
+    scale: 1.1;
+}
 
 
 /* ----- DESTINATIONS ----- */

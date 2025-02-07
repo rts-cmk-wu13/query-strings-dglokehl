@@ -20,7 +20,7 @@ fetch("/data/destinations.json")
                 </a>
 
                 <div class="destinations__card__caption">
-                    <i class="fa-solid fa-heart favorite__button"></i>
+                    <i class="fa-solid fa-heart favorite__button" id="fav${card.id}"></i>
                     <a href="destination.html?id=${card.id}" class="destinations__card__link">MORE</a>
                 </div>
             </article>
@@ -28,4 +28,23 @@ fetch("/data/destinations.json")
 
         destinationsSection.append(destinationsHeadline, destinationsContainer);
         root.append(destinationsSection);
+
+        let favoriteButton = document.querySelectorAll(".favorite__button");
+        favoriteButton.forEach(btn => {
+            btn.addEventListener("click", addToFavorite);
+            if (localStorage.getItem(btn.getAttribute("id"))) {
+                btn.classList.add("favorited");
+            }
+        });
+
+        function addToFavorite() {
+            if (this.classList.contains("favorited")) {
+                this.classList.remove("favorited");
+                localStorage.removeItem(this.getAttribute("id"), "favorite");
+            } else {
+                this.classList.add("favorited");
+                localStorage.setItem(this.getAttribute("id"), "favorite");
+            }
+        }
+
     });
