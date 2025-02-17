@@ -18,7 +18,7 @@ fetch(`/data/${id}.json`)
 
         let detailsFavorite = document.createElement("figcaption");
         detailsFavorite.classList.add("favorite__button", "favorite__button--details");
-        detailsFavorite.setAttribute("id", `fav${data.id}`)
+        detailsFavorite.setAttribute("id", `fav${data.id}`);
         detailsFavorite.innerHTML = `
             <i class="fa-solid fa-heart details__favorite__icon"></i>FAVORIT
         `;
@@ -67,20 +67,68 @@ fetch(`/data/${id}.json`)
 
 
         let favoriteButton = document.querySelectorAll(".favorite__button");
+
+        let favoriteArray = [];
+
         favoriteButton.forEach(btn => {
-            btn.addEventListener("click", addToFavorite);
-            if (localStorage.getItem(btn.getAttribute("id"))) {
+            btn.addEventListener("click", favoriteAddRemove);
+
+            if (readFromLocalStorage("favorites") !== null) {
+                favoriteArray = readFromLocalStorage("favorites");
+            }
+
+            if (favoriteArray.includes(btn.getAttribute("id"))) {
                 btn.classList.add("favorited");
             }
         });
 
-        function addToFavorite() {
+        function favoriteAddRemove() {
             if (this.classList.contains("favorited")) {
                 this.classList.remove("favorited");
-                localStorage.removeItem(this.getAttribute("id"), "favorite");
+
+                deleteFromLocalStorage("favorites", this.getAttribute("id"));
             } else {
                 this.classList.add("favorited");
-                localStorage.setItem(this.getAttribute("id"), "favorite");
+
+                saveToLocalStorage("favorites", this.getAttribute("id"));
             }
-        }
+        };
+
+        function saveToLocalStorage(key, value) {
+            favoriteArray.push(value);
+
+            return localStorage.setItem(key, JSON.stringify(favoriteArray));
+        };
+
+        function readFromLocalStorage(key) {
+            return JSON.parse(localStorage.getItem(key));
+        };
+
+        function deleteFromLocalStorage(key, value) {
+            favoriteArray.splice(favoriteArray.indexOf(value), 1);
+
+            return localStorage.setItem(key, JSON.stringify(favoriteArray));
+        };
     });
+
+
+function saveToLocalStorage(key, value) {
+    localStorage.setItem(key, value);
+
+    let string = `${key} saved to localStorage as ${value}`;
+    return string;
+};
+
+function readFromLocalStorage(key) {
+    localStorage.getItem(key);
+
+    let string = `key: ${key} - value: ${localStorage.getItem(key)}`;
+    return string;
+};
+
+function deleteFromLocalStorage(key) {
+    localStorage.removeItem(key);
+
+    let string = `${key} removed from localStorage`;
+    return string;
+};

@@ -29,22 +29,94 @@ fetch("/data/destinations.json")
         destinationsSection.append(destinationsHeadline, destinationsContainer);
         root.append(destinationsSection);
 
+
         let favoriteButton = document.querySelectorAll(".favorite__button");
+
+        let favoriteArray = [];
+
         favoriteButton.forEach(btn => {
-            btn.addEventListener("click", addToFavorite);
-            if (localStorage.getItem(btn.getAttribute("id"))) {
+            btn.addEventListener("click", favoriteAddRemove);
+
+            if (readFromLocalStorage("favorites") !== null) {
+                favoriteArray = readFromLocalStorage("favorites");
+            }
+
+            if (favoriteArray.includes(btn.getAttribute("id"))) {
                 btn.classList.add("favorited");
             }
         });
 
-        function addToFavorite() {
+        function favoriteAddRemove() {
             if (this.classList.contains("favorited")) {
                 this.classList.remove("favorited");
-                localStorage.removeItem(this.getAttribute("id"), "favorite");
+
+                deleteFromLocalStorage("favorites", this.getAttribute("id"));
             } else {
                 this.classList.add("favorited");
-                localStorage.setItem(this.getAttribute("id"), "favorite");
-            }
-        }
 
+                saveToLocalStorage("favorites", this.getAttribute("id"));
+            }
+        };
+
+        function saveToLocalStorage(key, value) {
+            favoriteArray.push(value);
+
+            return localStorage.setItem(key, JSON.stringify(favoriteArray));
+        };
+
+        function readFromLocalStorage(key) {
+            return JSON.parse(localStorage.getItem(key));
+        };
+
+        function deleteFromLocalStorage(key, value) {
+            favoriteArray.splice(favoriteArray.indexOf(value), 1);
+
+            return localStorage.setItem(key, JSON.stringify(favoriteArray));
+        };
     });
+
+
+
+
+// GAMMEL LØSNING:
+
+// favoriteButton.forEach(btn => {
+//     btn.addEventListener("click", favoriteAddRemove);
+//     if (readFromLocalStorage(btn.getAttribute("id"))) {
+//         btn.classList.add("favorited");
+//         console.log(readFromLocalStorage(btn.getAttribute("id")));
+//     }
+// });
+
+// function favoriteAddRemove() {
+//     if (this.classList.contains("favorited")) {
+//         this.classList.remove("favorited");
+//         deleteFromLocalStorage(this.getAttribute("id"));
+//         console.log(deleteFromLocalStorage(this.getAttribute("id")));
+//     } else {
+//         this.classList.add("favorited");
+//         saveToLocalStorage(this.getAttribute("id"), "favorite");
+//         console.log(saveToLocalStorage(this.getAttribute("id"), "favorite"));
+//     }
+// };
+
+
+// function saveToLocalStorage(key, value) {
+// localStorage.setItem(key, value);
+
+// let string = `${key} saved to localStorage as ${value}`;
+// return string;
+// };
+
+// function readFromLocalStorage(key) {
+// localStorage.getItem(key);
+
+// return localStorage.getItem(key);
+// };
+
+// function deleteFromLocalStorage(key) {
+// localStorage.removeItem(key);
+
+// let string = `${key} removed from localStorage`;
+// return string;
+// };

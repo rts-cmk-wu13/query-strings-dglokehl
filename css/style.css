@@ -37,7 +37,7 @@ img {
     color: #ff3333;
 }
 .favorite__button:hover {
-    scale: 1.1;
+    scale: 105%;
 }
 
 
@@ -64,9 +64,11 @@ img {
 .destinations__card__img__container {
     height: 18rem;
     display: block;
+
+    transition: filter 150ms ease-out;
 }
 .destinations__card__img__container:hover {
-    filter: brightness(0.75);
+    filter: brightness(0.9);
 }
 
 
