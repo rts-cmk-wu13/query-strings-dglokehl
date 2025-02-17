@@ -31,14 +31,18 @@ img {
     color: #000;
 
     cursor: pointer;
-    transition: scale 150ms ease-out;
-}
-.favorite__button:hover, .favorited {
-    color: #ff3333;
+    transition: scale 150ms ease-out, color 60ms ease-out;
 }
 .favorite__button:hover {
     scale: 105%;
 }
+.favorite__button:hover {
+    color: #bb3333;
+}
+.favorited, .favorited:hover {
+    color: #ff3333;
+}
+
 
 
 /* ----- DESTINATIONS ----- */
