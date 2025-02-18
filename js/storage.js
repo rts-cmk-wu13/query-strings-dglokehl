@@ -14,6 +14,14 @@ function favoritesAddRemove() {
 };
 
 
+
+/**
+ * 
+ * @param {string} key 
+ * @param {any | any[]} value 
+ * @returns {string}
+ */
+
 function saveToLocalStorage(key, value) {
     favoriteArray.push(value);
     console.log(favoriteArray);
@@ -21,12 +29,28 @@ function saveToLocalStorage(key, value) {
     return localStorage.setItem(key, JSON.stringify(favoriteArray));
 };
 
+
+/**
+ * 
+ * @param {string} key 
+ * @param {any | any[]} value 
+ * @returns {string}
+ */
+
 function deleteFromLocalStorage(key, value) {
     favoriteArray.splice(favoriteArray.indexOf(value), 1);
     console.log(favoriteArray);
 
     return localStorage.setItem(key, JSON.stringify(favoriteArray));
 };
+
+
+/**
+ * 
+ * @param {string} key 
+ * @param {any | any[]} value 
+ * @returns {string}
+ */
 
 function readFromLocalStorage(key) {
     return JSON.parse(localStorage.getItem(key));
