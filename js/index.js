@@ -32,20 +32,5 @@ fetch("/data/destinations.json")
         root.append(destinationsSection);
 
 
-        let favoriteButtons = document.querySelectorAll(".favorite__button");
-
-        favoriteButtons.forEach(btn => {
-            btn.addEventListener("click", favoritesAddRemove);
-
-            if (readFromLocalStorage("favorites") !== null) {
-                favoriteArray = readFromLocalStorage("favorites");
-
-                if (favoriteArray.includes(btn.getAttribute("data-fav"))) {
-                    btn.classList.add("favorited");
-                }
-            } else {
-                favoriteArray = [];
-            }
-        });
-        console.log("Favorites:", favoriteArray);
+        favoriteButtonStorage()
     });

@@ -8,7 +8,7 @@
 }
 
 a {
-    color: #000;
+    color: light-dark(var(--dark-color), var(--light-color));
     text-decoration: none;
 }
 a:hover {
@@ -25,13 +25,45 @@ img {
 
 
 
+/* ----- DARK MODE ----- */
+
+:root {
+    color-scheme: light dark;
+    --light-color: #F5F5F5;
+    --dark-color: #000;
+    --dark-color-bg: #111;
+
+    color: light-dark(var(--dark-color), var(--light-color));
+    background-color: light-dark(var(--light-color), var(--dark-color-bg));
+}
+
+[data-dark="true"] {
+    color-scheme: dark;
+}
+
+[data-dark="false"] {
+    color-scheme: light;
+}
+
+
+.darkmode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    position: fixed;
+    top: 1.5rem;
+    right: 2.5rem;
+    z-index: 999;
+}
+
+
 /* ----- COMPONENTS ----- */
 
 .favorite__button {
-    color: #000;
-
     cursor: pointer;
-    transition: scale 150ms ease-out, color 60ms ease-out;
+    transition: scale 150ms ease-out;
 }
 .favorite__button:hover {
     scale: 105%;
@@ -80,7 +112,7 @@ img {
     display: flex;
     justify-content: space-between;
 
-    background-color: #CEF9FF;
+    background-color: light-dark(#CEF9FF, #263234);
 
     padding: 1.75rem;
     padding-left: 1.0625rem;
@@ -96,7 +128,7 @@ img {
 
 /* ----- DETAILS ----- */
 
-#details {
+.details {
     max-width: 90rem;
 
     display: flex;

@@ -1,4 +1,4 @@
-const root = document.querySelector("#details");
+const root = document.querySelector("#root");
 
 let search = window.location.search;
 let params = new URLSearchParams(search);
@@ -9,77 +9,34 @@ let id = params.get("id");
 fetch(`/data/${id}.json`)
     .then(response => response.json())
     .then(data => {
-        let detailsImgContainer = document.createElement("figure");
-        detailsImgContainer.classList.add("details__img__container");
+        let detailsMain = document.createElement("main");
+        detailsMain.classList.add("details");
 
-        let detailsImg = document.createElement("img");
-        detailsImg.classList.add("details__img");
-        detailsImg.setAttribute("src", `img/${data.image}`);
+        detailsMain.innerHTML = `
+            <figure class="details__img__container">
+                <img class="details__img" src="img/${data.image}">
 
-        let detailsFavorite = document.createElement("figcaption");
-        detailsFavorite.classList.add("favorite__button", "favorite__button--details");
-        detailsFavorite.setAttribute("data-fav", `${data.id}`);
-        detailsFavorite.innerHTML = `
-            <i class="fa-solid fa-heart details__favorite__icon"></i>FAVORIT
+                <figcaption class="favorite__button favorite__button--details" data-fav="${data.id}">
+                    <i class="fa-solid fa-heart details__favorite__icon"></i>FAVORIT
+                </figcaption>
+            </figure>
+
+            <section class="details__text__container">
+                <h3 class="details__location">${data.destination}</h3>
+                <h1 class="details__headline">${data.title}</h1>
+                <h2 class="details__subheadline">${data.subtitle}</h2>
+                <p class="details__text">${data.text}</p>
+
+                <ul class="details__list">
+                    <li class="details__list__item--headline">Faciliteter</li>
+                    ${data.facilities.map(facility => `
+                        <li class="details__list__item">${facility}</li>
+                    `).join("")}
+                </ul>
+            </section>
         `;
-
-        detailsImgContainer.append(detailsImg, detailsFavorite);
-
-
-        let detailsTextContainer = document.createElement("section");
-        detailsTextContainer.classList.add("details__text__container");
+        root.append(detailsMain);
 
 
-        let detailsLocation = document.createElement("h3");
-        detailsLocation.classList.add("details__location");
-        detailsLocation.innerHTML = data.destination;
-
-        let detailsHeadline = document.createElement("h1");
-        detailsHeadline.classList.add("details__headline");
-        detailsHeadline.innerHTML = data.title;
-
-        let detailsSubheadline = document.createElement("h2");
-        detailsSubheadline.classList.add("details__subheadline");
-        detailsSubheadline.innerHTML = data.subtitle;
-
-        let detailsText = document.createElement("p");
-        detailsText.classList.add("details__text");
-        detailsText.innerHTML = data.text;
-
-
-        let detailsFacilities = document.createElement("ul");
-        detailsFacilities.classList.add("details__list");
-
-        let detailsFacilitiesHeadline = document.createElement("li");
-        detailsFacilitiesHeadline.classList.add("details__list__item--headline");
-        detailsFacilitiesHeadline.innerHTML = "Faciliteter";
-
-        detailsFacilities.innerHTML = data.facilities.map(facility => `
-            <li class="details__list__item">${facility}</li>
-        `).join("");
-
-        detailsFacilities.prepend(detailsFacilitiesHeadline);
-
-
-        detailsTextContainer.append(detailsLocation, detailsHeadline, detailsSubheadline, detailsText, detailsFacilities);
-
-        details.append(detailsImgContainer, detailsTextContainer);
-
-
-        let favoriteButtons = document.querySelectorAll(".favorite__button");
-
-        favoriteButtons.forEach(btn => {
-            btn.addEventListener("click", favoritesAddRemove);
-
-            if (readFromLocalStorage("favorites") !== null) {
-                favoriteArray = readFromLocalStorage("favorites");
-
-                if (favoriteArray.includes(btn.getAttribute("data-fav"))) {
-                    btn.classList.add("favorited");
-                }
-            } else {
-                favoriteArray = [];
-            }
-        });
-        console.log("Favorites:", favoriteArray);
+        favoriteButtonStorage()
     });
